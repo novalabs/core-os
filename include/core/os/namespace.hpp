@@ -6,6 +6,10 @@
 
 #pragma once
 
+/*! \namespace core::os
+ * \brief Core OS abstraction
+ */
+
 #define NAMESPACE_CORE_OS core::os
 #define NAMESPACE_CORE_OS_BEGIN \
    namespace core { \

@@ -15,6 +15,9 @@
 
 NAMESPACE_CORE_OS_BEGIN
 
+/*! \brief Base class for all IO hal_channels
+ * 
+ */
 class IOChannel
 {
 public:
@@ -24,35 +27,57 @@ public:
       INFINITE, IMMEDIATE
    };
 
+   /*! \brief Put a byte in the channel
+    * 
+    * \return number of bytes put
+    */
    virtual std::size_t
    put(
-      const uint8_t& x,
-      core::os::Time timeout
+      const uint8_t& x, //!< [in] byte
+      core::os::Time timeout //!< [in] timeout
    ) = 0;
 
+   /*! \brief Get a byte from the channel
+    * 
+    * \return number of bytes get
+    */
    virtual std::size_t
    get(
-      uint8_t&       x,
-      core::os::Time timeout
+      uint8_t&       x, //!< [out] byte
+      core::os::Time timeout //!< [in] timeout
    ) = 0;
 
+   /*! \brief Write data to a channel
+    * 
+    * \return number of bytes written
+    */
    virtual std::size_t
    write(
-      const uint8_t* buffer,
-      std::size_t    size,
-      core::os::Time timeout
+      const uint8_t* buffer, //!< [in] data buffer
+      std::size_t    size, //!< [in] size of the data (<= size of the data buffer)
+      core::os::Time timeout //!< [in] timeout
    ) = 0;
 
+   /*! \brief Read data from a channel
+    * 
+    * \return number of bytes read
+    */
    virtual std::size_t
    read(
-      uint8_t*       buffer,
-      std::size_t    size,
-      core::os::Time timeout
+      uint8_t*       buffer, //!< [in] data buffer
+      std::size_t    size, //!< [in] size of the data (<= size of the data buffer)
+      core::os::Time timeout //!< [in] timeout
    ) = 0;
 
+   /*! \brief Formatted print to a channel
+    * 
+    * \warning Only a subset of the "full" format parameters is supported.
+    * 
+    * \return number of bytes written
+    */
    virtual int
    printf(
-      const char* fmt,
+      const char* fmt, //!< [in] formatting string 
       ...
    ) = 0;
 
@@ -146,68 +171,5 @@ public:
       return Channel::channel;
    }
 };
-
-#if 0
-class IOStream
-{
-public:
-   using Stream = BaseSequentialStream *;
-   virtual int
-   printf(
-      const char* fmt,
-      ...
-   ) = 0;
-
-   virtual constexpr
-   Stream
-   rawStream() = 0;
-};
-
-template <class _SD>
-struct SDStreamTraits {
-   static constexpr auto stream = (IOStream::Stream)_SD::driver;
-};
-
-template <class _STREAM>
-// TODO:: Must be placed somewhere else, it's a port-specific piece of code!
-class IOStream_:
-   public core::mw::IOStream
-{
-public:
-   using Stream = _STREAM;
-
-   inline int
-   printf(
-      const char* fmt,
-      ...
-   )
-   {
-      va_list ap;
-      int     formatted_bytes;
-
-      va_start(ap, fmt);
-      formatted_bytes = chvprintf(rawStream(), fmt, ap);
-      va_end(ap);
-
-      return formatted_bytes;
-   }
-
-   inline int
-   read(
-      char*          buffer,
-      std::size_t    size,
-      core::os::Time timeout = core::os::Time::INFINITE
-   )
-   {
-      return 0;
-   }
-
-   inline constexpr IOStream::Stream
-   rawStream()
-   {
-      return Stream::stream;
-   }
-};
-#endif // if 0
 
 NAMESPACE_CORE_OS_END

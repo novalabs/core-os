@@ -12,7 +12,9 @@
 
 NAMESPACE_CORE_OS_BEGIN
 
-
+/*! \brief Mutex 
+ * 
+ */
 class Mutex:
    private core::Uncopyable
 {
@@ -20,21 +22,47 @@ private:
    Mutex_ impl;
 
 public:
+  /*! \brief Initialize the mutex
+   * 
+   */
    void
    initialize();
 
+  /*! \brief Acquire ownership
+   *
+   * If the mutex is already owned, the requesting thread is put to sleep and queued.
+   * 
+   * \warning Must be used only in a system lock zone by threads only.
+   */
    void
    acquire_unsafe();
 
+  /*! \brief Relinquishes ownership
+   *
+   * \pre The invoking thread must have the ownership of the mutex
+   * 
+   * \warning Must be used only in a system lock zone by threads only.
+   */
    void
    release_unsafe();
 
+  /*! \brief Acquire ownership
+   *
+   * If the mutex is already owned, the requesting thread is put to sleep and queued.
+   * 
+   * \warning Must be used only outside a system lock zone.
+   */
    void
    acquire();
 
+  /*! \brief Relinquishes ownership
+   *
+   * \pre The invoking thread must have the ownership of the mutex
+   * 
+   * \warning Must be used only outside a system lock zone.
+   */
    void
    release();
-
 
 public:
    Mutex();
