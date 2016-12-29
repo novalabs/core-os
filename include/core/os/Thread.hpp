@@ -233,6 +233,16 @@ public:
     */
    static bool
    should_terminate();
+
+   bool
+   operator==(
+      const Thread& other
+   );
+
+   bool
+   operator!=(
+      const Thread& other
+   );
 };
 
 
@@ -404,6 +414,22 @@ inline bool
 Thread::should_terminate()
 {
    return Thread_::should_terminate();
+}
+
+inline bool
+Thread::operator==(
+   const Thread& other
+)
+{
+   return impl == other.impl;
+}
+
+inline bool
+Thread::operator!=(
+   const Thread& other
+)
+{
+   return impl != other.impl;
 }
 
 NAMESPACE_CORE_OS_END

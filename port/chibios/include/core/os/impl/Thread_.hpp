@@ -165,6 +165,16 @@ public:
 
    static bool
    should_terminate();
+
+   bool
+   operator==(
+      const Thread_& other
+   );
+
+   bool
+   operator!=(
+      const Thread_& other
+   );
 };
 
 
@@ -387,6 +397,22 @@ bool
 Thread_::should_terminate()
 {
    return chThdShouldTerminateX();
+}
+
+inline bool
+Thread_::operator==(
+   const Thread_& other
+)
+{
+   return &impl == &other.impl;
+}
+
+inline bool
+Thread_::operator!=(
+   const Thread_& other
+)
+{
+   return &impl != &other.impl;
 }
 
 NAMESPACE_CORE_OS_END
