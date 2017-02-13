@@ -39,6 +39,7 @@ inline
 void
 SysLock_::release()
 {
+   chSchRescheduleS();
    chSysUnlock();
 }
 
