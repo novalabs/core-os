@@ -41,7 +41,7 @@
  *          function.
  */
 typedef void*(* memgetfunc_t)(
-   size_t size
+    size_t size
 );
 
 /**
@@ -81,42 +81,42 @@ extern "C" {
 #endif
 void
 _core_init(
-   void
+    void
 );
 
 void*
 chCoreAlloc(
-   size_t size
+    size_t size
 );
 
 void*
 chCoreAllocI(
-   size_t size
+    size_t size
 );
 
 size_t
 chCoreStatus(
-   void
+    void
 );
 
 void*
 chCoreReserve(
-   size_t size
+    size_t size
 );
 
 void*
 chCoreReserveI(
-   size_t size
+    size_t size
 );
 
 void*
 chCoreUnreserve(
-   size_t size
+    size_t size
 );
 
 void*
 chCoreUnreserveI(
-   size_t size
+    size_t size
 );
 
 

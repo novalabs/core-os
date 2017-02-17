@@ -16,48 +16,48 @@ NAMESPACE_CORE_OS_BEGIN
 
 
 class SpinEvent:
-   private core::Uncopyable
+    private core::Uncopyable
 {
 public:
-   typedef SpinEvent_::Mask Mask;
+    typedef SpinEvent_::Mask Mask;
 
-   enum {
-      MAX_INDEX = (sizeof(Mask) * 8) - 1
-   };
+    enum {
+        MAX_INDEX = (sizeof(Mask) * 8) - 1
+    };
 
 private:
-   SpinEvent_ impl;
+    SpinEvent_ impl;
 
 public:
-   Thread*
-   get_thread() const;
+    Thread*
+    get_thread() const;
 
-   void
-   set_thread(
-      Thread* threadp
-   );
+    void
+    set_thread(
+        Thread* threadp
+    );
 
-   void
-   signal_unsafe(
-      unsigned event_index,
-      bool     mustReschedule = false
-   );
+    void
+    signal_unsafe(
+        unsigned event_index,
+        bool     mustReschedule = false
+    );
 
-   void
-   signal(
-      unsigned event_index
-   );
+    void
+    signal(
+        unsigned event_index
+    );
 
-   Mask
-   wait(
-      const Time& timeout
-   );
+    Mask
+    wait(
+        const Time& timeout
+    );
 
 
 public:
-   SpinEvent(
-      Thread* threadp = & Thread::self()
-   );
+    SpinEvent(
+        Thread* threadp = & Thread::self()
+    );
 };
 
 
@@ -65,52 +65,52 @@ inline
 Thread*
 SpinEvent::get_thread() const
 {
-   return impl.get_thread();
+    return impl.get_thread();
 }
 
 inline
 void
 SpinEvent::set_thread(
-   Thread* threadp
+    Thread* threadp
 )
 {
-   impl.set_thread(threadp);
+    impl.set_thread(threadp);
 }
 
 inline
 void
 SpinEvent::signal_unsafe(
-   unsigned event_index,
-   bool     mustReschedule
+    unsigned event_index,
+    bool     mustReschedule
 )
 {
-   impl.signal_unsafe(event_index, mustReschedule);
+    impl.signal_unsafe(event_index, mustReschedule);
 }
 
 inline
 void
 SpinEvent::signal(
-   unsigned event_index
+    unsigned event_index
 )
 {
-   impl.signal(event_index);
+    impl.signal(event_index);
 }
 
 inline
 SpinEvent::Mask
 SpinEvent::wait(
-   const Time& timeout
+    const Time& timeout
 )
 {
-   return impl.wait(timeout);
+    return impl.wait(timeout);
 }
 
 inline
 SpinEvent::SpinEvent(
-   Thread* threadp
+    Thread* threadp
 )
-   :
-   impl(threadp)
+    :
+    impl(threadp)
 {}
 
 

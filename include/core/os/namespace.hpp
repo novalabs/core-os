@@ -12,8 +12,8 @@
 
 #define NAMESPACE_CORE_OS core::os
 #define NAMESPACE_CORE_OS_BEGIN \
-   namespace core { \
-   namespace os {
+    namespace core { \
+    namespace os {
 #define NAMESPACE_CORE_OS_END \
-   } \
-   }
+    } \
+    }

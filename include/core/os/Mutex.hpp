@@ -12,64 +12,69 @@
 
 NAMESPACE_CORE_OS_BEGIN
 
-/*! \brief Mutex 
- * 
+/*! \brief Mutex
+ *
  */
 class Mutex:
-   private core::Uncopyable
+    private core::Uncopyable
 {
 private:
-   Mutex_ impl;
+    Mutex_ impl;
 
 public:
-  /*! \brief Initialize the mutex
-   * 
-   */
-   void
-   initialize();
+    /*! \brief Initialize the mutex
+     *
+     */
+    void
+    initialize();
 
-  /*! \brief Acquire ownership
-   *
-   * If the mutex is already owned, the requesting thread is put to sleep and queued.
-   * 
-   * \warning Must be used only in a system lock zone by threads only.
-   */
-   void
-   acquire_unsafe();
 
-  /*! \brief Relinquishes ownership
-   *
-   * \pre The invoking thread must have the ownership of the mutex
-   * 
-   * \warning Must be used only in a system lock zone by threads only.
-   */
-   void
-   release_unsafe();
+    /*! \brief Acquire ownership
+     *
+     * If the mutex is already owned, the requesting thread is put to sleep and queued.
+     *
+     * \warning Must be used only in a system lock zone by threads only.
+     */
+    void
+    acquire_unsafe();
 
-  /*! \brief Acquire ownership
-   *
-   * If the mutex is already owned, the requesting thread is put to sleep and queued.
-   * 
-   * \warning Must be used only outside a system lock zone.
-   */
-   void
-   acquire();
 
-  /*! \brief Relinquishes ownership
-   *
-   * \pre The invoking thread must have the ownership of the mutex
-   * 
-   * \warning Must be used only outside a system lock zone.
-   */
-   void
-   release();
+    /*! \brief Relinquishes ownership
+     *
+     * \pre The invoking thread must have the ownership of the mutex
+     *
+     * \warning Must be used only in a system lock zone by threads only.
+     */
+    void
+    release_unsafe();
+
+
+    /*! \brief Acquire ownership
+     *
+     * If the mutex is already owned, the requesting thread is put to sleep and queued.
+     *
+     * \warning Must be used only outside a system lock zone.
+     */
+    void
+    acquire();
+
+
+    /*! \brief Relinquishes ownership
+     *
+     * \pre The invoking thread must have the ownership of the mutex
+     *
+     * \warning Must be used only outside a system lock zone.
+     */
+    void
+    release();
+
 
 public:
-   Mutex();
-   explicit
-   Mutex(
-      bool initialize
-   );
+    Mutex();
+    explicit
+    Mutex(
+        bool initialize
+    );
 };
 
 
@@ -77,50 +82,50 @@ inline
 void
 Mutex::initialize()
 {
-   impl.initialize();
+    impl.initialize();
 }
 
 inline
 void
 Mutex::acquire_unsafe()
 {
-   impl.acquire_unsafe();
+    impl.acquire_unsafe();
 }
 
 inline
 void
 Mutex::release_unsafe()
 {
-   impl.release_unsafe();
+    impl.release_unsafe();
 }
 
 inline
 void
 Mutex::acquire()
 {
-   impl.acquire();
+    impl.acquire();
 }
 
 inline
 void
 Mutex::release()
 {
-   impl.release();
+    impl.release();
 }
 
 inline
 Mutex::Mutex()
-   :
-   impl()
+    :
+    impl()
 {}
 
 
 inline
 Mutex::Mutex(
-   bool initialize
+    bool initialize
 )
-   :
-   impl(initialize)
+    :
+    impl(initialize)
 {}
 
 

@@ -65,20 +65,20 @@ static uint8_t* realendmem;
  */
 void
 _core_init(
-   void
+    void
 )
 {
 #if CH_MEMCORE_SIZE == 0
-   extern uint8_t __heap_base__[];
-   extern uint8_t __heap_end__[];
-   nextmem = (uint8_t*)MEM_ALIGN_NEXT(__heap_base__);
-   endmem  = (uint8_t*)MEM_ALIGN_PREV(__heap_end__);
+    extern uint8_t __heap_base__[];
+    extern uint8_t __heap_end__[];
+    nextmem = (uint8_t*)MEM_ALIGN_NEXT(__heap_base__);
+    endmem  = (uint8_t*)MEM_ALIGN_PREV(__heap_end__);
 #else
-   static stkalign_t buffer[MEM_ALIGN_NEXT(CH_MEMCORE_SIZE) / MEM_ALIGN_SIZE];
-   nextmem = (uint8_t*)&buffer[0];
-   endmem  = (uint8_t*)&buffer[MEM_ALIGN_NEXT(CH_MEMCORE_SIZE) / MEM_ALIGN_SIZE];
+    static stkalign_t buffer[MEM_ALIGN_NEXT(CH_MEMCORE_SIZE) / MEM_ALIGN_SIZE];
+    nextmem = (uint8_t*)&buffer[0];
+    endmem  = (uint8_t*)&buffer[MEM_ALIGN_NEXT(CH_MEMCORE_SIZE) / MEM_ALIGN_SIZE];
 #endif
-   realendmem = endmem;
+    realendmem = endmem;
 }
 
 /**
@@ -95,15 +95,15 @@ _core_init(
  */
 void*
 chCoreAlloc(
-   size_t size
+    size_t size
 )
 {
-   void* p;
+    void* p;
 
-   chSysLock();
-   p = chCoreAllocI(size);
-   chSysUnlock();
-   return p;
+    chSysLock();
+    p = chCoreAllocI(size);
+    chSysUnlock();
+    return p;
 }
 
 /**
@@ -120,22 +120,22 @@ chCoreAlloc(
  */
 void*
 chCoreAllocI(
-   size_t size
+    size_t size
 )
 {
-   void* p;
+    void* p;
 
-   chDbgCheckClassI();
+    chDbgCheckClassI();
 
-   size = MEM_ALIGN_NEXT(size);
+    size = MEM_ALIGN_NEXT(size);
 
-   if ((size_t)(endmem - nextmem) < size) {
-      return NULL;
-   }
+    if ((size_t)(endmem - nextmem) < size) {
+        return NULL;
+    }
 
-   p        = nextmem;
-   nextmem += size;
-   return p;
+    p        = nextmem;
+    nextmem += size;
+    return p;
 }
 
 /**
@@ -147,70 +147,70 @@ chCoreAllocI(
  */
 size_t
 chCoreStatus(
-   void
+    void
 )
 {
-   return (size_t)(endmem - nextmem);
+    return (size_t)(endmem - nextmem);
 }
 
 void*
 chCoreReserve(
-   size_t size
+    size_t size
 )
 {
-   void* p;
+    void* p;
 
-   chSysLock();
-   p = chCoreReserveI(size);
-   chSysUnlock();
-   return p;
+    chSysLock();
+    p = chCoreReserveI(size);
+    chSysUnlock();
+    return p;
 }
 
 void*
 chCoreReserveI(
-   size_t size
+    size_t size
 )
 {
-   chDbgCheckClassI();
+    chDbgCheckClassI();
 
-   size = MEM_ALIGN_NEXT(size);
+    size = MEM_ALIGN_NEXT(size);
 
-   if ((size_t)(endmem - nextmem) < size) {
-      return NULL;
-   }
+    if ((size_t)(endmem - nextmem) < size) {
+        return NULL;
+    }
 
-   endmem -= size;
-   return endmem;
+    endmem -= size;
+    return endmem;
 }
 
 void*
 chCoreUnreserve(
-   size_t size
+    size_t size
 )
 {
-   void* p;
+    void* p;
 
-   chSysLock();
-   p = chCoreUnreserveI(size);
-   chSysUnlock();
-   return p;
+    chSysLock();
+    p = chCoreUnreserveI(size);
+    chSysUnlock();
+    return p;
 }
 
 void*
 chCoreUnreserveI(
-   size_t size
+    size_t size
 )
 {
-   chDbgCheckClassI();
+    chDbgCheckClassI();
 
-   size = MEM_ALIGN_NEXT(size);
+    size = MEM_ALIGN_NEXT(size);
 
-   if ((size_t)(realendmem - endmem) < size) {
-      return NULL;
-   }
+    if ((size_t)(realendmem - endmem) < size) {
+        return NULL;
+    }
 
-   endmem += size;
-   return endmem;
+    endmem += size;
+    return endmem;
 }
 #endif /* CH_USE_MEMCORE */
 

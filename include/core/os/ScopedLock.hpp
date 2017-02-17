@@ -14,35 +14,35 @@ NAMESPACE_CORE_OS_BEGIN
 
 template <typename Lockable>
 class ScopedLock:
-   private core::Uncopyable
+    private core::Uncopyable
 {
 private:
-   Lockable& lock;
+    Lockable& lock;
 
 public:
-   ScopedLock(
-      Lockable& lock
-   );
-   ~ScopedLock();
+    ScopedLock(
+        Lockable& lock
+    );
+    ~ScopedLock();
 };
 
 
 template <typename Lockable>
 inline
 ScopedLock<Lockable>::ScopedLock(
-   Lockable& lock
+    Lockable& lock
 )
-   :
-   lock(lock)
+    :
+    lock(lock)
 {
-   this->lock.acquire();
+    this->lock.acquire();
 }
 
 template <typename Lockable>
 inline
 ScopedLock<Lockable>::~ScopedLock()
 {
-   this->lock.release();
+    this->lock.release();
 }
 
 NAMESPACE_CORE_OS_END

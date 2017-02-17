@@ -13,16 +13,16 @@ struct Callback;
 
 template <typename Ret, typename ... Params>
 struct Callback<Ret(Params ...)> {
-   template <typename ... Args>
-   static Ret
-   callback(
-      Args ... args
-   )
-   {
-      return func(args ...);
-   }
+    template <typename ... Args>
+    static Ret
+    callback(
+        Args ... args
+    )
+    {
+        return func(args ...);
+    }
 
-   static std::function<Ret(Params ...)> func;
+    static std::function<Ret(Params ...)> func;
 };
 
 template <typename Ret, typename ... Params>

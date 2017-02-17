@@ -18,44 +18,44 @@ NAMESPACE_CORE_OS_BEGIN
 class SpinEvent_
 {
 public:
-   typedef ::eventmask_t Mask;
+    typedef ::eventmask_t Mask;
 
 private:
-   typedef ::thread_t ChThread;
+    typedef ::thread_t ChThread;
 
 private:
-   Thread* threadp;
+    Thread* threadp;
 
 public:
-   Thread*
-   get_thread() const;
+    Thread*
+    get_thread() const;
 
-   void
-   set_thread(
-      Thread* threadp
-   );
+    void
+    set_thread(
+        Thread* threadp
+    );
 
-   void
-   signal_unsafe(
-      unsigned event_index,
-      bool     mustReschedule = false
-   );
+    void
+    signal_unsafe(
+        unsigned event_index,
+        bool     mustReschedule = false
+    );
 
-   void
-   signal(
-      unsigned event_index
-   );
+    void
+    signal(
+        unsigned event_index
+    );
 
-   Mask
-   wait(
-      const Time& timeout
-   );
+    Mask
+    wait(
+        const Time& timeout
+    );
 
 
 public:
-   SpinEvent_(
-      Thread* threadp = & Thread::self()
-   );
+    SpinEvent_(
+        Thread* threadp = & Thread::self()
+    );
 };
 
 
@@ -63,73 +63,73 @@ inline
 Thread*
 SpinEvent_::get_thread() const
 {
-   return threadp;
+    return threadp;
 }
 
 inline
 void
 SpinEvent_::set_thread(
-   Thread* threadp
+    Thread* threadp
 )
 {
-   this->threadp = threadp;
+    this->threadp = threadp;
 }
 
 inline
 void
 SpinEvent_::signal_unsafe(
-   unsigned event_index,
-   bool     mustReschedule
+    unsigned event_index,
+    bool     mustReschedule
 )
 {
-   if (threadp != NULL) {
-      CORE_ASSERT(event_index < 8 * sizeof(Mask));
-      chEvtSignalI(reinterpret_cast<ChThread*>(threadp), 1 << event_index);
+    if (threadp != NULL) {
+        CORE_ASSERT(event_index < 8 * sizeof(Mask));
+        chEvtSignalI(reinterpret_cast<ChThread*>(threadp), 1 << event_index);
 #if CORE_USE_BRIDGE_MODE
 // DAVIDE if we are calling this from a Thread we must reschedule. If we call it from a ISR, the ISR takes care of the reschedule...
-      if (mustReschedule) {
-         chSchRescheduleS();
-      }
+        if (mustReschedule) {
+            chSchRescheduleS();
+        }
 #endif
-   }
+    }
 }
 
 inline
 void
 SpinEvent_::signal(
-   unsigned event_index
+    unsigned event_index
 )
 {
-   chSysLock();
-   signal_unsafe(event_index);
-   chSysUnlock();
+    chSysLock();
+    signal_unsafe(event_index);
+    chSysUnlock();
 }
 
 inline
 SpinEvent_::Mask
 SpinEvent_::wait(
-   const Time& timeout
+    const Time& timeout
 )
 {
-   systime_t ticks;
+    systime_t ticks;
 
-   if (timeout == Time::IMMEDIATE) {
-      ticks = TIME_IMMEDIATE;
-   } else if (timeout == Time::INFINITE) {
-      ticks = TIME_INFINITE;
-   } else {
-      ticks = timeout.ticks();
-   }
+    if (timeout == Time::IMMEDIATE) {
+        ticks = TIME_IMMEDIATE;
+    } else if (timeout == Time::INFINITE) {
+        ticks = TIME_INFINITE;
+    } else {
+        ticks = timeout.ticks();
+    }
 
-   return chEvtWaitAnyTimeout(ALL_EVENTS, ticks);
+    return chEvtWaitAnyTimeout(ALL_EVENTS, ticks);
 }
 
 inline
 SpinEvent_::SpinEvent_(
-   Thread* threadp
+    Thread* threadp
 )
-   :
-   threadp(threadp)
+    :
+    threadp(threadp)
 {}
 
 
