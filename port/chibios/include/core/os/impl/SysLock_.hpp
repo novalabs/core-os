@@ -8,23 +8,29 @@
 
 #include <core/os/namespace.hpp>
 #include <core/common.hpp>
-#include <ch.h>
+#include <osal.h>
 
 NAMESPACE_CORE_OS_BEGIN
 
 
 class SysLock_:
-   private core::Uncopyable
+    private core::Uncopyable
 {
 private:
-   SysLock_();
+    SysLock_();
 
 public:
-   static void
-   acquire();
+    static void
+    acquire();
 
-   static void
-   release();
+    static void
+    release();
+
+    static void
+    acquire_from_isr();
+
+    static void
+    release_from_isr();
 };
 
 
@@ -32,15 +38,29 @@ inline
 void
 SysLock_::acquire()
 {
-   chSysLock();
+    osalSysLock();
 }
 
 inline
 void
 SysLock_::release()
 {
-   chSchRescheduleS();
-   chSysUnlock();
+    osalOsRescheduleS();
+    osalSysUnlock();
+}
+
+inline
+void
+SysLock_::acquire_from_isr()
+{
+    osalSysLockFromISR();
+}
+
+inline
+void
+SysLock_::release_from_isr()
+{
+    osalSysUnlockFromISR();
 }
 
 NAMESPACE_CORE_OS_END
