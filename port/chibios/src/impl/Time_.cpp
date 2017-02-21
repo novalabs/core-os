@@ -6,7 +6,7 @@
 
 #include <core/os/namespace.hpp>
 #include <core/os/Time.hpp>
-#include <ch.h>
+#include <osal.h>
 #include <limits>
 
 NAMESPACE_CORE_OS_BEGIN
@@ -15,7 +15,7 @@ NAMESPACE_CORE_OS_BEGIN
 Time
 Time::now()
 {
-    register Type t = chVTGetSystemTimeX() / (CH_CFG_ST_FREQUENCY / 1000L);
+    register Type t = osalOsGetSystemTimeX() / (CH_CFG_ST_FREQUENCY / 1000L);
 
     return ms((t == INFINITEN.raw) ? (t + 1) :
               (t == INFINITE.raw) ? (t - 1) : t);
