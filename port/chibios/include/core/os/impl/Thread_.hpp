@@ -20,7 +20,7 @@ class Thread_
     template <std::size_t SIZE>
     class Stack
     {
-public:
+    public:
         inline constexpr std::size_t
         size()
         {
@@ -39,7 +39,7 @@ public:
             return _storage;
         }
 
-private:
+    private:
         THD_WORKING_AREA(_storage, SIZE);
     };
 

@@ -6,10 +6,12 @@
 
 #pragma once
 
-#include <core/os/namespace.hpp>
 #include <core/common.hpp>
-#include <core/os/impl/Thread_.hpp>
+#include <core/os/common.hpp>
+
 #include <core/os/MemoryPool.hpp>
+
+#include <core/os/impl/Thread_.hpp>
 
 NAMESPACE_CORE_OS_BEGIN
 
@@ -23,9 +25,21 @@ class Thread:
 {
 public:
     using Priority = Thread_::Priority; //!< Thread priority type
-    using Function = Thread_::Function; //!< Thread function type
+
+    /*! \brief Thread function type
+     *
+     * The thread function signature is \c void(void* args)
+     */
+    using Function = Thread_::Function;
     using Return   = Thread_::Return;  //!< Thread return and message type
     using Argument = Thread_::Argument; //!< Thread function argument type
+
+    /*! \brief Stack for a statically allocated Thread
+     *
+     * It adds all the storage required by the OS to the user defined size.
+     *
+     * \tparam SIZE required (user) stack size
+     */
     template <std::size_t SIZE>
     using Stack = Thread_::Stack<SIZE>;
 
@@ -48,9 +62,6 @@ public:
         OK = Thread_::OK //!< Generic success
     };
 
-private:
-    Thread_ impl;
-
 public:
     /*! \brief Gets the name of the thread
      *
@@ -69,16 +80,6 @@ public:
     );
 
 
-private:
-    Thread();
-
-public:
-    static size_t
-    compute_stack_size(
-        size_t userlen
-    );
-
-
     /*! \brief Creates a thread into a static memory area
      *
      * \return Pointer to the created thread
@@ -90,7 +91,22 @@ public:
         Priority    priority, //!< [in] priority level of the new thread
         Function    threadf, //!< [in] thread function
         void*       argp, //!< [in] pointer to parameters to be passed to the thread function
-        const char* namep = NULL
+        const char* namep = nullptr //!< [in] name of the thread
+    );
+
+
+    /*! \brief Creates a thread into a static memory area
+     *
+     * \return Pointer to the created thread
+     */
+    template <std::size_t SIZE>
+    static Thread*
+    create_static(
+        Stack<SIZE>& stack, //!< [in] thread storage and stack
+        Priority     priority, //!< [in] priority level of the new thread
+        Function     threadf, //!< [in] thread function
+        void*        argp, //!< [in] pointer to parameters to be passed to the thread function
+        const char*  namep = nullptr //!< [in] name of the thread
     );
 
 
@@ -105,7 +121,7 @@ public:
         Priority    priority, //!< [in] priority level of the new thread
         Function    threadf, //!< [in] thread function
         void*       argp, //!< [in] pointer to parameters to be passed to the thread function
-        const char* namep = NULL
+        const char* namep = nullptr //!< [in] name of the thread
     );
 
 
@@ -120,7 +136,7 @@ public:
         Priority       priority, //!< [in] priority level of the new thread
         Function       threadf, //!< [in] thread function
         void*          argp, //!< [in] pointer to parameters to be passed to the thread function
-        const char*    namep = NULL
+        const char*    namep = nullptr //!< [in] name of the thread
     );
 
 
@@ -163,7 +179,6 @@ public:
 
 
     /*! \brief Puts the current thread to sleep for a given amount of time
-     *
      */
     static void
     sleep(
@@ -172,7 +187,6 @@ public:
 
 
     /*! \brief Puts the current thread to sleep until a given time
-     *
      */
     static void
     sleep_until(
@@ -189,7 +203,6 @@ public:
 
 
     /*! \brief Wakes up a thread that has been put to sleep with a Thread::sleep command
-     *
      */
     static void
     wake(
@@ -199,20 +212,21 @@ public:
 
 
     /*! \brief Exits the current thread.
-     *
      */
     static void
     exit(
-        uint32_t msg
+        uint32_t msg //!< [in] thread exit code
     );
 
 
     /*! \brief Waits for the specified thread to finish.
      *
+     * \return Success
+     * \retval true the thread exit code was OK
      */
     static bool
     join(
-        Thread& thread
+        Thread& thread //!< [in] thread to wait for
     );
 
 
@@ -222,7 +236,7 @@ public:
      */
     static void
     terminate(
-        Thread& thread //!< reference to the to-be-terminated thread
+        Thread& thread //!< [in] the to-be-terminated thread
     );
 
 
@@ -234,17 +248,41 @@ public:
     static bool
     should_terminate();
 
+
+    /*! \brief Thread equivalence
+     *
+     *  \return Thread equivalence
+     *  \retval true if this == other
+     */
     bool
     operator==(
-        const Thread& other
+        const Thread& other //!< [in] other thread
     );
 
+
+    /*! \brief Thread inequality
+     *
+     *  \return Thread inequality
+     *  \retval true if this != other
+     */
     bool
     operator!=(
-        const Thread& other
+        const Thread& other //!< [in] other thread
+    );
+
+
+private:
+    Thread();
+
+    Thread_ impl;
+
+    static size_t
+    compute_stack_size(
+        size_t userlen
     );
 };
 
+/* ------------------------------------------------------------------------- */
 
 inline
 const char*
@@ -284,6 +322,21 @@ Thread::create_static(
 {
     return reinterpret_cast<Thread*>(
         Thread_::create_static(stackp, stacklen, priority, threadf, argp, namep)
+    );
+}
+
+template <std::size_t SIZE>
+inline Thread*
+Thread::create_static(
+    Stack<SIZE>& stack,
+    Priority     priority,
+    Function     threadf,
+    void*        argp,
+    const char*  namep
+)
+{
+    return reinterpret_cast<Thread*>(
+        Thread_::create_static(stack, stack.size(), priority, threadf, argp, namep)
     );
 }
 

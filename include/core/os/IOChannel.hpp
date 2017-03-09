@@ -6,9 +6,11 @@
 
 #pragma once
 
-#include <core/mw/namespace.hpp>
-#include <core/os/Time.hpp>
 #include <core/common.hpp>
+#include <core/os/common.hpp>
+
+#include <core/os/Time.hpp>
+
 #include <chprintf.h>
 #include <hal_channels.h>
 #include <stdarg.h>

@@ -6,8 +6,9 @@
 
 #pragma once
 
-#include <core/os/namespace.hpp>
 #include <core/common.hpp>
+#include <core/os/common.hpp>
+
 #include <core/os/impl/SysLock_.hpp>
 
 NAMESPACE_CORE_OS_BEGIN
@@ -34,7 +35,7 @@ public:
     class Scope:
         private core::Uncopyable
     {
-public:
+    public:
         /*! \brief Acquire the system lock
          *
          */
@@ -69,7 +70,7 @@ public:
     class ISRScope:
         private core::Uncopyable
     {
-public:
+    public:
         /*! \brief Acquire the system lock
          *
          */
@@ -98,10 +99,9 @@ public:
      * } // release lock whenever lock goes out of scope
      * \endcode
      *
-     * \pre Must be used from within a NORMAL or ISR context
-     *
+     * \tparam CTX calling context
      */
-    template <CallingContext CTX>
+    template <core::os::CallingContext CTX>
     class ScopeFrom:
         private core::Uncopyable
     {};

@@ -6,11 +6,13 @@
 
 #pragma once
 
-#include <core/os/namespace.hpp>
 #include <core/common.hpp>
-#include <core/os/impl/SpinEvent_.hpp>
+#include <core/os/common.hpp>
+
 #include <core/os/Time.hpp>
 #include <core/os/Thread.hpp>
+
+#include <core/os/impl/SpinEvent_.hpp>
 
 NAMESPACE_CORE_OS_BEGIN
 
