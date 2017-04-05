@@ -17,13 +17,42 @@ __verbose_terminate_handler()
 }
 }
 
+namespace std {
+void
+__throw_bad_function_call()
+{
+    osalSysHalt("__throw_bad_function_call");
+}
+}
+
+typedef int __guard;
+
 extern "C" {
 #include <stdio.h>
 #include <errno.h>
 
 #include "osal.h"
 
-//void *__dso_handle; // -fno-common
+    int
+    __cxa_guard_acquire(
+        __guard* g
+    )
+    {
+        return !*(char*)(g);
+    }
+
+    void
+    __cxa_guard_release(
+        __guard* g
+    )
+    {
+        *(char*)g = 1;
+    }
+
+    void
+    __cxa_guard_abort(
+        __guard* g __attribute__((unused))
+    ) {}
 
     void
     _exit(
