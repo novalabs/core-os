@@ -20,10 +20,16 @@ public:
     static void
     initialize();
 
-    static const void
+    static void
     halt(
         const char* message
     );
+
+    static void
+    enable();
+
+    static void
+    disable();
 
 
 private:
@@ -38,13 +44,24 @@ OS::initialize()
     OS_::initialize();
 }
 
-inline const
-void
+inline void
 OS::halt(
     const char* message
 )
 {
     OS_::halt(message);
+}
+
+inline void
+OS::enable()
+{
+    OS_::enable();
+}
+
+inline void
+OS::disable()
+{
+    OS_::disable();
 }
 
 NAMESPACE_CORE_OS_END

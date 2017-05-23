@@ -20,10 +20,16 @@ public:
     static void
     initialize();
 
-    static const void
+    static void
     halt(
         const char* message
     );
+
+    static void
+    enable();
+
+    static void
+    disable();
 
 
 private:
@@ -39,12 +45,24 @@ OS_::initialize()
     chSysInit();
 }
 
-inline const void
+inline void
 OS_::halt(
     const char* message
 )
 {
     osalSysHalt(message);
+}
+
+inline void
+OS_::enable()
+{
+    osalSysEnable();
+}
+
+inline void
+OS_::disable()
+{
+    osalSysDisable();
 }
 
 NAMESPACE_CORE_OS_END
