@@ -87,7 +87,7 @@ public:
         ...
     ) = 0;
 
-    virtual constexpr
+    virtual
     Channel
     rawChannel() = 0;
 };
@@ -171,7 +171,7 @@ public:
         return formatted_bytes;
     }
 
-    inline constexpr IOChannel::Channel
+    inline IOChannel::Channel
     rawChannel()
     {
         return Channel::channel;
