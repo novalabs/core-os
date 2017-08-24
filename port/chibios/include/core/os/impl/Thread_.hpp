@@ -142,6 +142,11 @@ public:
     static Return
     sleep();
 
+    static Return
+    sleep_timeout(
+        const Time& timeout
+    );
+
     static void
     wake(
         Thread_& thread,
@@ -351,6 +356,21 @@ Thread_::Return
 Thread_::sleep()
 {
     chSchGoSleepS(CH_STATE_SUSPENDED);
+
+    return chThdGetSelfX()->p_u.rdymsg;
+}
+
+inline
+Thread_::Return
+Thread_::sleep_timeout(
+    const Time& timeout
+)
+{
+    msg_t msg = chSchGoSleepTimeoutS(CH_STATE_SLEEPING, timeout.ticks());
+
+    if (msg == MSG_TIMEOUT) {
+        return 0;
+    }
 
     return chThdGetSelfX()->p_u.rdymsg;
 }

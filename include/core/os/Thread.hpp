@@ -202,6 +202,16 @@ public:
     sleep();
 
 
+    /*! \brief Puts the current thread to sleep until a Thread::wake command or a timeout occurs
+     *
+     * \return message value specified in the Thread::wake or 0 in case of timeout
+     */
+    static Return
+    sleep_timeout(
+        const Time& timeout
+    );
+
+
     /*! \brief Wakes up a thread that has been put to sleep with a Thread::sleep command
      */
     static void
@@ -425,6 +435,15 @@ Thread::Return
 Thread::sleep()
 {
     return Thread_::sleep();
+}
+
+inline
+Thread::Return
+Thread::sleep_timeout(
+    const Time& timeout
+)
+{
+    return Thread_::sleep_timeout(timeout);
 }
 
 inline void
