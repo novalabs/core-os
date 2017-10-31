@@ -233,7 +233,7 @@ Thread_::create_static(
     const char* namep
 )
 {
-    Thread_* threadp = reinterpret_cast<Thread_*>(chThdCreateStatic(stackp, compute_stack_size(stacklen), static_cast<tprio_t>(priority), threadf, argp));
+	ch_thread* threadp = chThdCreateStatic(stackp, compute_stack_size(stacklen), static_cast<tprio_t>(priority), threadf, argp);
 
 #if CH_USE_REGISTRY
     if (threadp != NULL) {
@@ -243,7 +243,7 @@ Thread_::create_static(
 #else
     (void)namep;
 #endif
-    return threadp;
+    return reinterpret_cast<Thread_*>(threadp);
 }
 
 inline
@@ -257,7 +257,7 @@ Thread_::create_heap(
     const char* namep
 )
 {
-    Thread_* threadp = reinterpret_cast<Thread_*>(chThdCreateFromHeap(reinterpret_cast<memory_heap_t*>(heapp), compute_stack_size(stacklen), priority, threadf, argp));
+	ch_thread* threadp = chThdCreateFromHeap(reinterpret_cast<memory_heap_t*>(heapp), compute_stack_size(stacklen), priority, threadf, argp);
 
 #if CH_USE_REGISTRY
     if (threadp != NULL) {
@@ -267,7 +267,7 @@ Thread_::create_heap(
 #else
     (void)namep;
 #endif
-    return threadp;
+    return reinterpret_cast<Thread_*>(threadp);
 }
 
 inline
@@ -280,7 +280,7 @@ Thread_::create_pool(
     const char*  namep
 )
 {
-    Thread_* threadp = reinterpret_cast<Thread_*>(chThdCreateFromMemoryPool(&mempool.get_impl(), priority, threadf, argp));
+    ch_thread* threadp = chThdCreateFromMemoryPool(&mempool.get_impl(), priority, threadf, argp);
 
 #if CH_USE_REGISTRY
     if (threadp != NULL) {
@@ -290,7 +290,7 @@ Thread_::create_pool(
 #else
     (void)namep;
 #endif
-    return threadp;
+    return reinterpret_cast<Thread_*>(threadp);
 }
 
 inline
