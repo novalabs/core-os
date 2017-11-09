@@ -113,13 +113,7 @@ SpinEvent_::wait(
 {
     systime_t ticks;
 
-    if (timeout == Time::IMMEDIATE) {
-        ticks = TIME_IMMEDIATE;
-    } else if (timeout == Time::INFINITE) {
-        ticks = TIME_INFINITE;
-    } else {
-        ticks = timeout.ticks();
-    }
+    ticks = timeout.ticks();
 
     return chEvtWaitAnyTimeout(ALL_EVENTS, ticks);
 }
