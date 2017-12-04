@@ -98,7 +98,7 @@ Condition_::wait_unsafe(
     const Time& timeout
 )
 {
-    return chCondWaitTimeoutS(&impl, timeout.ticks()) == MSG_OK;
+    return chCondWaitTimeoutS(&impl, timeout.ticks()) != MSG_TIMEOUT;
 }
 
 inline
