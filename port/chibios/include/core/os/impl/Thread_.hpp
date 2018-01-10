@@ -235,7 +235,7 @@ Thread_::create_static(
 {
 	ch_thread* threadp = chThdCreateStatic(stackp, compute_stack_size(stacklen), static_cast<tprio_t>(priority), threadf, argp);
 
-#if CH_USE_REGISTRY
+#if CH_CFG_USE_REGISTRY
     if (threadp != NULL) {
         chRegSetThreadNameX(threadp, namep);
     }
@@ -259,7 +259,7 @@ Thread_::create_heap(
 {
 	ch_thread* threadp = chThdCreateFromHeap(reinterpret_cast<memory_heap_t*>(heapp), compute_stack_size(stacklen), priority, threadf, argp);
 
-#if CH_USE_REGISTRY
+#if CH_CFG_USE_REGISTRY
     if (threadp != NULL) {
         chRegSetThreadNameX(threadp, namep);
     }
@@ -282,7 +282,7 @@ Thread_::create_pool(
 {
     ch_thread* threadp = chThdCreateFromMemoryPool(&mempool.get_impl(), priority, threadf, argp);
 
-#if CH_USE_REGISTRY
+#if CH_CFG_USE_REGISTRY
     if (threadp != NULL) {
         chRegSetThreadNameX(threadp, namep);
     }
