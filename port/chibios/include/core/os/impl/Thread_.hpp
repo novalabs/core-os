@@ -139,6 +139,12 @@ public:
         const Time& time
     );
 
+    static Time
+    sleep_until(
+        const Time& previous,
+        const Time& next
+    );
+
     static Return
     sleep();
 
@@ -350,6 +356,17 @@ Thread_::sleep_until(
         chThdYield();
     }
 }
+
+inline
+Time
+Thread_::sleep_until(
+    const Time& previous,
+    const Time& next
+)
+{
+	return Time(chThdSleepUntilWindowed(previous.ticks(), next.ticks()));
+}
+
 
 inline
 Thread_::Return

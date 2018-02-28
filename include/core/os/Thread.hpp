@@ -193,6 +193,13 @@ public:
         const Time& time //!< [in] wake up time
     );
 
+    /*! \brief Puts the current thread to sleep until a given time, in a safe way
+     */
+    static Time
+    sleep_until(
+        const Time& previous,
+        const Time& next
+    );
 
     /*! \brief Puts the current thread to sleep until a Thread::wake command
      *
@@ -428,6 +435,16 @@ Thread::sleep_until(
 )
 {
     Thread_::sleep_until(time);
+}
+
+inline
+Time
+Thread::sleep_until(
+    const Time& previous,
+    const Time& next
+)
+{
+    return Thread_::sleep_until(previous, next);
 }
 
 inline
