@@ -10,9 +10,8 @@
 NAMESPACE_CORE_OS_BEGIN
 
 
-const Time Time::IMMEDIATE(0);
-const Time Time::INFINITE(MAX_US + 1);
-const Time Time::INFINITEN(MIN_US - 1);
+const Time Time::IMMEDIATE(TIME_INFINITE);
+const Time Time::INFINITE(TIME_INFINITE);
 
 
 NAMESPACE_CORE_OS_END

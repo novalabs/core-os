@@ -21,26 +21,12 @@ class Time
 public:
     using Type = uint32_t;
 
-    static const Type MIN_US = std::numeric_limits<Type>::min();
-    static const Type MAX_US = std::numeric_limits<Type>::max() - 1;
-    static const Type MIN_MS = MIN_US / 1000;
-    static const Type MAX_MS = MAX_US / 1000;
-    static const Type MIN_S  = MIN_US / 1000000;
-    static const Type MAX_S  = MAX_US / 1000000;
-
 public:
     /*! \brief Get the time in system ticks
      *
      */
     uint32_t
     ticks() const;
-
-
-    /*! \brief Get the time in us
-     *
-     */
-    Type
-    us() const;
 
 
     /*! \brief Get the time in whole ms
@@ -57,13 +43,6 @@ public:
     s() const;
 
 
-    /*! \brief Get the time in us
-     *
-     */
-    float
-    to_us() const;
-
-
     /*! \brief Get the time in ms
      *
      */
@@ -76,14 +55,6 @@ public:
      */
     float
     to_s() const;
-
-
-    /*! \brief Get the frequency corresponding to the interval
-     *
-     */
-    float
-    hz() const;
-
 
     /*! \brief Assignement
      *
@@ -117,7 +88,7 @@ public:
 
     template <typename T>
     Time(
-        T microseconds
+        T milliseconds
     );
 
     explicit
@@ -134,10 +105,9 @@ public:
      *
      */
     static Time
-    us(
-        const Type microseconds //!< [in] inteval in us
+    ticks(
+        const Type ticks //!< [in] inteval in ticks
     );
-
 
     /*! \brief Returns a time interval
      *
@@ -157,15 +127,6 @@ public:
     );
 
 
-    /*! \brief Returns a time interval
-     *
-     */
-    static Time
-    hz(
-        const float hertz //!< [in] frequency in hz
-    );
-
-
     /*! \brief Returns the actual time
      *
      */
@@ -176,7 +137,6 @@ public:
 public:
     static const Time IMMEDIATE; //!< A null time interval
     static const Time INFINITE; //!< An infinite time interval
-    static const Time INFINITEN;
 
 public:
     Type raw;
@@ -230,54 +190,40 @@ operator-(
     const Time& rhs
 );
 
-
 inline
-Time::Type
-Time::us() const
+uint32_t
+Time::ticks() const
 {
     return raw;
+
 }
 
 inline
 Time::Type
 Time::ms() const
 {
-    return raw / 1000;
+    return raw;
 }
 
 inline
 Time::Type
 Time::s() const
 {
-    return raw / 1000000;
-}
-
-inline
-float
-Time::to_us() const
-{
-    return raw;
+    return raw / 1000;
 }
 
 inline
 float
 Time::to_ms() const
 {
-    return raw / 1000.0f;
+    return raw;
 }
 
 inline
 float
 Time::to_s() const
 {
-    return raw / 1000000.0f;
-}
-
-inline
-float
-Time::hz() const
-{
-    return 1000000.0f / raw;
+    return raw / 1000.0f;
 }
 
 inline
@@ -317,19 +263,27 @@ Time::Time() : raw() {}
 template <typename T>
 inline
 Time::Time(
-    T microseconds
+    T milliseconds
 )
     :
-    raw(static_cast<Type>(microseconds))
+    raw(static_cast<Type>(milliseconds))
 {}
 
+template <>
+inline
+Time::Time(
+    systime_t milliseconds
+)
+    :
+    raw(milliseconds)
+{}
 
 inline
 Time::Time(
     float seconds
 )
     :
-    raw(static_cast<Type>((seconds + 0.5) / 1000000.0))
+    raw(static_cast<Type>((seconds + 0.5) / 1000.0))
 {}
 
 
@@ -338,14 +292,13 @@ Time::Time(
     const Time& rhs
 ) : raw(rhs.raw) {}
 
-
 inline
 Time
-Time::us(
-    const Type microseconds
+Time::ticks(
+    const Type ticks
 )
 {
-    return Time(microseconds);
+    return Time(ticks);
 }
 
 inline
@@ -354,7 +307,7 @@ Time::ms(
     const Type milliseconds
 )
 {
-    return Time(milliseconds * 1000);
+    return Time(milliseconds);
 }
 
 inline
@@ -363,7 +316,7 @@ Time::s(
     const Type seconds
 )
 {
-    return Time(seconds * 1000000);
+    return Time(seconds * 1000);
 }
 
 inline
