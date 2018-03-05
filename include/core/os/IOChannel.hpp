@@ -6,12 +6,27 @@
 
 #pragma once
 
+#ifndef IOCHANNEL_USE_CHPRINTF
+#ifdef CHIBIOS_HAS_CHPRINTF
+#define IOCHANNEL_USE_CHPRINTF TRUE
+#else
+#define IOCHANNEL_USE_CHPRINTF FALSE
+#endif
+#else
+#if IOCHANNEL_USE_CHPRINTF && not defined(CHIBIOS_HAS_CHPRINTF)
+#error IOCHANNEL_USE_CHPRINTF is true but no there is no chprintf
+#endif
+#endif
+
 #include <core/common.hpp>
 #include <core/os/common.hpp>
 
 #include <core/os/Time.hpp>
 
+#if IOCHANNEL_USE_CHPRINTF
 #include <chprintf.h>
+#endif
+
 #include <hal_channels.h>
 #include <stdarg.h>
 
@@ -75,6 +90,7 @@ public:
     ) = 0;
 
 
+#if IOCHANNEL_USE_CHPRINTF || defined(__DOXYGEN__)
     /*! \brief Formatted print to a channel
      *
      * \warning Only a subset of the "full" format parameters is supported.
@@ -86,6 +102,7 @@ public:
         const char* fmt, //!< [in] formatting string
         ...
     ) = 0;
+#endif
 
     virtual
     Channel
@@ -155,6 +172,7 @@ public:
         return chnReadTimeout(Channel::channel, buffer, size, timeout.ticks());
     }
 
+#if IOCHANNEL_USE_CHPRINTF
     inline int
     printf(
         const char* fmt,
@@ -169,7 +187,9 @@ public:
         va_end(ap);
 
         return formatted_bytes;
+
     }
+#endif
 
     inline IOChannel::Channel
     rawChannel()
