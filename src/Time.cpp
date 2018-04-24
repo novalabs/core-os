@@ -7,11 +7,3 @@
 #include <core/mw/namespace.hpp>
 #include <core/os/Time.hpp>
 
-NAMESPACE_CORE_OS_BEGIN
-
-
-const Time Time::IMMEDIATE(TIME_INFINITE);
-const Time Time::INFINITE(TIME_INFINITE);
-
-
-NAMESPACE_CORE_OS_END

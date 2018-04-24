@@ -21,4 +21,7 @@ Time::now()
     return ticks(t);
 }
 
+const Time Time::IMMEDIATE(TIME_IMMEDIATE);
+const Time Time::INFINITE(TIME_INFINITE);
+
 NAMESPACE_CORE_OS_END
