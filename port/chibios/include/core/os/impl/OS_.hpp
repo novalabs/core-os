@@ -8,6 +8,7 @@
 
 #include <core/os/namespace.hpp>
 #include <core/common.hpp>
+#include <hal.h>
 #include <osal.h>
 
 NAMESPACE_CORE_OS_BEGIN
