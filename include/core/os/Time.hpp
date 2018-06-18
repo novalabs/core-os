@@ -252,7 +252,7 @@ Time::operator-=(
     const Time& rhs
 )
 {
-    raw += rhs.raw;
+    raw -= rhs.raw;
     return *this;
 }
 
