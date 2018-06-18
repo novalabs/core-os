@@ -408,7 +408,7 @@ Thread_::exit(
     uint32_t msg
 )
 {
-    chThdExitS(msg);
+    chThdExit(msg);
 }
 
 inline
